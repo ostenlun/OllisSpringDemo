@@ -25,8 +25,11 @@ public class Arrival {
 
 	@Id
 	private String strId;
+	
+	// Time stamp in milliseconds
 	private String strTime;
 
+	// Arrival info in JSON format
 	private String strArrival;
 	
 	public Arrival() {

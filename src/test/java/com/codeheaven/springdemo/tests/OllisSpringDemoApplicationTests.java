@@ -1,4 +1,4 @@
-package com.codeheaven.OllisSpringDemo;
+package com.codeheaven.springdemo.tests;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
