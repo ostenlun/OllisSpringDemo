@@ -1,5 +1,5 @@
 # OllisSpringDemo
-Simple Spring demo application
+Simple Spring demo application for retrieving bus stop arrivals and storing them into a remote Mongodb database.
 
 > Live demo TBA [_here_].
 
