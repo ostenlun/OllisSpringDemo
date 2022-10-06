@@ -13,13 +13,15 @@ This is a simple backend that retrieves data from Tfl API and stores it in a rem
 - MongoDB
 
 ## Features
-List the ready features here:
+The main features are:
 - Get arrivals retrieves the bus arrivals for a certain bus stop in London by calling a Tfl API (https://api.tfl.gov.uk/StopPoint/490009333W/arrivals) and stores the data to a remote database.
 - Get history retrieves the arrivals stored in the database
 - Delete history deletes all arrivals stored in the database
 
 ## Usage
-Please use OllisSpringDemoUI to use this application.
+Please use OllisSpringDemoUI as a user interface to use this application. 
+
+Ask for the remote database credentials (src/main/resources/application.properties) or use your own Mongodb cluster.
 
 ## Project Status
 Project is: _complete_
