@@ -33,11 +33,9 @@ public class Arrival {
 	private String strArrival;
 	
 	public Arrival() {
-		super();
 	}
 
 	public Arrival(String time, String arrival) {
-		super();
 		strTime = time;
 		strArrival = arrival;
 	}

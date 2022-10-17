@@ -34,6 +34,8 @@ import org.slf4j.LoggerFactory;
 
 import com.codeheaven.springdemo.model.Arrival;
 import com.codeheaven.springdemo.service.ArrivalService;
+import com.codeheaven.springdemo.service.ArrivalServiceImpl;
+
 import java.lang.NumberFormatException;
 
 /**
@@ -42,7 +44,6 @@ import java.lang.NumberFormatException;
  * @author Olli Stenlund
  *
  */
-
 @RestController
 @RequestMapping("/")
 public class ArrivalController {
@@ -60,87 +61,22 @@ public class ArrivalController {
 	@GetMapping("/arrivals")
 	@CrossOrigin()
 	public String arrivals() {
-		RestTemplate restTemplate = new RestTemplate();
-		HttpHeaders headers = new HttpHeaders();
-		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-	    HttpEntity <String> entity = new HttpEntity<String>(headers);
-	      
-	    String strTflResponse = restTemplate.exchange("https://api.tfl.gov.uk/StopPoint/490009333W/arrivals", HttpMethod.GET, entity, String.class).getBody();
-		String str = "<div>";
-		
-		JSONParser parser = new JSONParser();
-		ArrayList<JSONObject> arrivals = new ArrayList<JSONObject>();
-				
-        try (Reader reader = new StringReader(strTflResponse)) {
-        	JSONArray jsonArray = (JSONArray) parser.parse(reader);
-            Iterator<JSONObject> iterator = jsonArray.iterator();
-            while (iterator.hasNext()) {
-                arrivals.add(iterator.next());
-            }
-	    } catch (IOException e) {
-			e.printStackTrace();
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}   
-	    
-        // Sort arrivals based on arrival time
-	    arrivals.sort((o1, o2)->(Integer.valueOf("" + o1.get("timeToStation"))-(Integer.valueOf("" + o2.get("timeToStation")))));
-
-	    Iterator<JSONObject> iterator = arrivals.iterator();
-        String arrivalTimes = "Arrival times: ";
-        
-        // Save the received arrivals in the database
-        while (iterator.hasNext()) {
-        	JSONObject jsonObject = iterator.next();
-        	Long time = System.currentTimeMillis();
-    	    Arrival arrival = new Arrival("" + time, jsonObject.toJSONString());
-    		arrivalService.saveArrival(arrival);
-    		
-    		str += makeArrivalString(time, jsonObject);
-    		arrivalTimes += jsonObject.get("timeToStation") + " ";
-        }
-        
-        System.out.println(arrivalTimes);
-        str += "</div>";
-		return str;
+		if (arrivalService != null) {
+			return arrivalService.getAndStoreArrivals();
+		} else {
+			return "Error: ArrivalService instance null";
+		}
 	}
 	
 	// Finds all arrival data in the database
 	@GetMapping("/history")
 	@CrossOrigin()
 	public String history() {
-		String str = "<div>";
-		
-		List<Arrival> arrivals = arrivalService.getHistory();
-		
-		if (arrivals.size() == 0) {
-			Log.info("No history found");
-			str += "No arrivals found</div>";
-			return str;
+		if (arrivalService != null) {
+			return arrivalService.getHistory();
+		} else {
+			return "Error: ArrivalService instance null";
 		}
-				
-		JSONParser parser = new JSONParser();
-		Log.info("Arrivals found: " + arrivals.size());
-
-		// Go through arrivals and present them in string form
-		for (int i = 0; i < arrivals.size(); i++) {
-			Arrival arrival = arrivals.get(i);
-			
-			if (arrival == null) {
-				continue;
-			}
-			
-			Log.info("Arrival found: " + arrival.toString());
-						
-			try (Reader reader = new StringReader(arrival.getArrival())) {
-            	JSONObject jsonObject = (JSONObject) parser.parse(reader);
-        		long time = Long.valueOf(arrival.getTime());
-            	str += makeArrivalString(time, jsonObject);
-			} catch (Exception e) {
-				e.printStackTrace();
-			} 
-		}
-		return str + "</div>";
 	}
 
 	// Delete all arrivals in the database
@@ -148,25 +84,10 @@ public class ArrivalController {
 	@CrossOrigin()
 	public String deleteAll() 
 	{
-		arrivalService.deleteAll();
-		Log.info("Arrivals deleted");
-		return "<div>Arrivals deleted</div>";
-	}
-	
-	// Present the arrival in string form
-	public String makeArrivalString(long time, JSONObject jsonObject) {
-		String outputStr = "";
-		String strDestination = (String) jsonObject.get("destinationName");
-		String strBearing = (String) jsonObject.get("bearing");
-		long nTimeToStation = (long) jsonObject.get("timeToStation");
-	    long minsToStation = (long) (nTimeToStation / 60);
-	
-		Date date = new Date(time);
-	
-		SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-	    String strTime = dt.format(date);
-	    
-		outputStr += "<p>" + strTime + "     bus " + strBearing + " " + strDestination + " " + minsToStation + " mins</p>";
-		return outputStr;
+		if (arrivalService != null) {
+			return arrivalService.deleteAllArrivals();
+		} else {
+			return "Error: ArrivalService instance null";
+		}
 	}
 }

@@ -48,7 +48,7 @@ class ArrivalControllerTest {
 	}
 	
 	@Test
-	void historyShouldReturnDefaultMessage() throws Exception {
+	public void historyShouldReturnDefaultMessage() throws Exception {
 		assertThat(this.testRestTemplate.getForObject("http://localhost:" + port + "/history",
 			String.class)).contains("<div>");
 	}

@@ -2,6 +2,8 @@ package com.codeheaven.springdemo.service;
 
 import java.util.List;
 
+import org.json.simple.JSONObject;
+
 import com.codeheaven.springdemo.model.Arrival;
 
 /**
@@ -11,7 +13,10 @@ import com.codeheaven.springdemo.model.Arrival;
  *
  */
 public interface ArrivalService {
+	public String getAndStoreArrivals();
+	public String getHistory(); 
 	public void saveArrival(Arrival arrival);
-	public List<Arrival> getHistory();
-	public void deleteAll();
+	public List<Arrival> getAllArrivals();
+	public String deleteAllArrivals();
+	public String makeArrivalString(long time, JSONObject jsonObject);
 }
