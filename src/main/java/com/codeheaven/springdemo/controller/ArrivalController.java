@@ -54,7 +54,7 @@ public class ArrivalController {
 
 	@GetMapping("/")
 	public String index() {
-		return "Please call either /arrivals or /history";
+		return "<div>Please call either /arrivals or /history</div>";
 	}
 	
 	// Retrieves arrivals for a specific bus stop and saves them into database along with a timestamp
@@ -64,7 +64,7 @@ public class ArrivalController {
 		if (arrivalService != null) {
 			return arrivalService.getAndStoreArrivals();
 		} else {
-			return "Error: ArrivalService instance null";
+			return "<div>Error: ArrivalService instance null</div>";
 		}
 	}
 	
@@ -75,7 +75,7 @@ public class ArrivalController {
 		if (arrivalService != null) {
 			return arrivalService.getHistory();
 		} else {
-			return "Error: ArrivalService instance null";
+			return "<div>Error: ArrivalService instance null</div>";
 		}
 	}
 
@@ -87,7 +87,13 @@ public class ArrivalController {
 		if (arrivalService != null) {
 			return arrivalService.deleteAllArrivals();
 		} else {
-			return "Error: ArrivalService instance null";
+			return "<div>Error: ArrivalService instance null</div>";
 		}
+	}
+	
+	@GetMapping("/error")
+	@CrossOrigin()
+	public String error() {
+		return "<div>Internal server error</div>";
 	}
 }
