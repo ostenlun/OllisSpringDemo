@@ -21,7 +21,7 @@ The main features are:
 ## Usage
 Please use OllisSpringDemoUI as a frontend UI to use this application. You can also call the web API using the following browser commands when the backend app is running as a server:
 
-*/history*
+*/history*<br>
 */arrivals*
 
 Ask for the remote database credentials (src/main/resources/application.properties) or use your own Mongodb cluster.
