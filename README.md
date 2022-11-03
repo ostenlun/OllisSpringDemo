@@ -26,7 +26,7 @@ and stores the data to a remote database.
 Please use OllisSpringDemoUI as a frontend UI to use this application. You can also call the web API using the following browser commands when the backend app is running as a server:
 
 ```
-/history<br>
+/history
 /arrivals
 ```
 
